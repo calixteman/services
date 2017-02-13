@@ -1,0 +1,8 @@
+-e ../../lib/bot_common[pulse]
+
+-e .
+
+libmozdata
+asyncio
+
+# click
