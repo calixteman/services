@@ -17,7 +17,7 @@ in python.mkDerivation {
     ];
   propagatedBuildInputs =
     [
-    ] ++ optionals (builtins.elem "pulse" extras) [ python.packages."aioamqp" python.packages."asyncio" ]
+    ] ++ optionals (builtins.elem "pulse" extras) [ python.packages."aioamqp" ]
     ;
   checkPhase = ''
     flake8 --exclude=nix_run_setup.py,build/

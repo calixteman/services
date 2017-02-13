@@ -2,7 +2,7 @@
 # See more at: https://github.com/garbas/pypi2nix
 #
 # COMMAND:
-#   pypi2nix -v -V 3.5 -s six packaging appdirs -E libffi openssl pkgconfig freetype.dev -r /home/lao/dev/mozilla/relengapi/src/shipit_bot_sa/requirements.txt -r /home/lao/dev/mozilla/relengapi/src/shipit_bot_sa/requirements-dev.txt -r /home/lao/dev/mozilla/relengapi/src/shipit_bot_sa/requirements-nix.txt
+#   pypi2nix -v -V 3.5 -E libffi openssl pkgconfig freetype.dev -r ../../lib/releng_common/requirements-dev.txt -r requirements.txt -r requirements-dev.txt -r requirements-nix.txt
 #
 
 { pkgs ? import <nixpkgs> {}
@@ -16,18 +16,18 @@ let
   pythonPackages = import "${toString pkgs.path}/pkgs/top-level/python-packages.nix" {
     inherit pkgs;
     inherit (pkgs) stdenv;
-    python = pkgs.python36;
+    python = pkgs.python35;
     self = pythonPackages;
   };
 
-  commonBuildInputs = with pkgs; [ libffi openssl pkgconfig freetype.dev ];
+  commonBuildInputs = with pkgs; [ postgresql libffi openssl pkgconfig freetype.dev ];
   commonDoCheck = false;
 
   withPackages = pkgs':
     let
       pkgs = builtins.removeAttrs pkgs' ["__unfix__"];
       interpreter = pythonPackages.buildPythonPackage {
-        name = "python36-interpreter";
+        name = "python35-interpreter";
         buildInputs = [ makeWrapper ] ++ (builtins.attrValues pkgs);
         buildCommand = ''
           mkdir -p $out/bin
@@ -35,7 +35,9 @@ let
           for dep in ${builtins.concatStringsSep " " (builtins.attrValues pkgs)}; do
             if [ -d "$dep/bin" ]; then
               for prog in "$dep/bin/"*; do
-                ln -s $prog $out/bin/`basename $prog`
+                if [ -f $prog ]; then
+                  ln -s $prog $out/bin/`basename $prog`
+                fi
               done
             fi
           done

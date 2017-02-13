@@ -1,7 +1,7 @@
 # generated using pypi2nix tool (version: 1.6.0)
 #
 # COMMAND:
-#   pypi2nix -v -V 3.5 -s six packaging appdirs -E libffi openssl pkgconfig freetype.dev -r /home/lao/dev/mozilla/relengapi/src/shipit_bot_sa/requirements.txt -r /home/lao/dev/mozilla/relengapi/src/shipit_bot_sa/requirements-dev.txt -r /home/lao/dev/mozilla/relengapi/src/shipit_bot_sa/requirements-nix.txt
+#   pypi2nix -v -V 3.5 -s six packaging appdirs -E libffi openssl pkgconfig freetype.dev -r requirements.txt -r requirements-dev.txt -r requirements-nix.txt
 #
 
 { pkgs, python, commonBuildInputs ? [], commonDoCheck ? false }:
@@ -17,7 +17,7 @@ self: {
     doCheck = commonDoCheck;
     buildInputs = commonBuildInputs;
     propagatedBuildInputs = [
-      self."asyncio"
+      #self."asyncio"
     ];
     meta = with pkgs.stdenv.lib; {
       homepage = "";
@@ -41,24 +41,6 @@ self: {
       homepage = "";
       license = licenses.mit;
       description = "A small Python module for determining appropriate \" +         \"platform-specific dirs, e.g. a \"user data dir\".";
-    };
-  };
-
-
-
-  "asyncio" = python.mkDerivation {
-    name = "asyncio-3.4.3";
-    src = pkgs.fetchurl {
-      url = "https://pypi.python.org/packages/da/54/054bafaf2c0fb8473d423743e191fcdf49b2c1fd5e9af3524efbe097bafd/asyncio-3.4.3.tar.gz";
-      sha256 = "83360ff8bc97980e4ff25c964c7bd3923d333d177aa4f7fb736b019f26c7cb41";
-    };
-    doCheck = commonDoCheck;
-    buildInputs = commonBuildInputs;
-    propagatedBuildInputs = [ ];
-    meta = with pkgs.stdenv.lib; {
-      homepage = "";
-      license = "";
-      description = "reference implementation of PEP 3156";
     };
   };
 
