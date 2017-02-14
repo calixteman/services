@@ -4,6 +4,7 @@ import json
 from urllib.request import urlopen
 from bot_common.pulse import create_consumer, run_consumer
 from bot_common.taskcluster import TaskclusterClient
+from libmozdata import bugzilla
 
 import asyncio
 
