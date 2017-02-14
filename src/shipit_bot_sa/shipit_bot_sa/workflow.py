@@ -3,8 +3,7 @@ import re
 import json
 from urllib.request import urlopen
 from bot_common.pulse import create_consumer, run_consumer
-#from libmozdata import bugzilla
-#from libmozdata import patchanalysis
+from bot_common.taskcluster import TaskclusterClient
 
 import asyncio
 
@@ -17,19 +16,22 @@ class PulseWorkflow(object):
     """
     Main bot workflow
     """
-    def __init__(self):
+    def __init__(self, secrets_path, client_id=None, access_token=None):
 
-        # TODO: move in TC secrets
-        user = 'babadie'
-        password = '4EdoDSDalZXERkcElR2k'
-        queue = 'exchange/bugzilla/simple'
+        # Fetch pulse credentials from TC secrets
+        self.tc = TaskclusterClient(client_id, access_token)
+        secrets = self.tc.get_secret(secrets_path)
+        required = ('PULSE_USER', 'PULSE_PASSWORD', 'PULSE_QUEUE')
+        for req in required:
+            if req not in secrets:
+                raise Exception('Missing value {} in Taskcluster secret value {}'.format(req, secrets_path))  # noqa
 
         # Use pulse consumer from bot_common
         self.consumer = create_consumer(
-            user,
-            password,
-            queue,
-            '#',
+            secrets['PULSE_USER'],
+            secrets['PULSE_PASSWORD'],
+            secrets['PULSE_QUEUE'],
+            secrets.get('PULSE_TOPIC', '#'),
             self.got_message
         )
 
@@ -54,8 +56,6 @@ class PulseWorkflow(object):
         # Show we got something
         print("Trying to match a mozreview with Id: {}".format(bugzilla_id))
 
-        return
-
         # Analyse the attachment of the bug
         fields = ['id', 'data', 'is_obsolete', 'creation_time', 'content_type']
         bugzilla.Bugzilla(
@@ -65,7 +65,7 @@ class PulseWorkflow(object):
         ).get_data()
 
         # Ack the message so it is removed from the broker's queue
-        # message.ack()
+        await channel.basic_client_ack(delivery_tag=envelope.delivery_tag)
 
     def commenthandler(self, data, bugid):
         bug = {

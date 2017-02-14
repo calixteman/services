@@ -1,7 +1,7 @@
 # generated using pypi2nix tool (version: 1.6.0)
 #
 # COMMAND:
-#   pypi2nix -v -V 3.5 -s six packaging appdirs -E libffi openssl pkgconfig freetype.dev -r requirements.txt -r requirements-dev.txt -r requirements-nix.txt
+#   pypi2nix -v -V 3.5 -s six packaging appdirs -E libffi openssl pkgconfig freetype.dev -r /home/lao/dev/mozilla/relengapi/src/shipit_bot_sa/requirements.txt -r /home/lao/dev/mozilla/relengapi/src/shipit_bot_sa/requirements-dev.txt -r /home/lao/dev/mozilla/relengapi/src/shipit_bot_sa/requirements-nix.txt
 #
 
 { pkgs, python, commonBuildInputs ? [], commonDoCheck ? false }:
@@ -16,13 +16,34 @@ self: {
     };
     doCheck = commonDoCheck;
     buildInputs = commonBuildInputs;
-    propagatedBuildInputs = [
-      #self."asyncio"
-    ];
+    propagatedBuildInputs = [ ];
     meta = with pkgs.stdenv.lib; {
       homepage = "";
       license = licenses.bsdOriginal;
       description = "AMQP implementation using asyncio";
+    };
+  };
+
+
+
+  "aiohttp" = python.mkDerivation {
+    name = "aiohttp-1.3.1";
+    src = pkgs.fetchurl {
+      url = "https://pypi.python.org/packages/41/42/76a4cff04488799e78d37c5bb3b607e36d2c4686141621002d2479b54dbe/aiohttp-1.3.1.tar.gz";
+      sha256 = "e147b0cea568773443683becce9de4071506431118609b5d477fe61508417af1";
+    };
+    doCheck = commonDoCheck;
+    buildInputs = commonBuildInputs;
+    propagatedBuildInputs = [
+      self."async-timeout"
+      self."chardet"
+      self."multidict"
+      self."yarl"
+    ];
+    meta = with pkgs.stdenv.lib; {
+      homepage = "";
+      license = licenses.asl20;
+      description = "http client/server for asyncio";
     };
   };
 
@@ -46,6 +67,24 @@ self: {
 
 
 
+  "async-timeout" = python.mkDerivation {
+    name = "async-timeout-1.1.0";
+    src = pkgs.fetchurl {
+      url = "https://pypi.python.org/packages/29/f6/eeac39dfadd3a7610bb33842cf611a1f09fcd2e445ab76e4c951efde0c2b/async-timeout-1.1.0.tar.gz";
+      sha256 = "b88bd1fe001b800ec23c7bf27a81b32819e2a56668e9fba5646a7f3618143081";
+    };
+    doCheck = commonDoCheck;
+    buildInputs = commonBuildInputs;
+    propagatedBuildInputs = [ ];
+    meta = with pkgs.stdenv.lib; {
+      homepage = "";
+      license = licenses.asl20;
+      description = "Timeout context manager for asyncio programs";
+    };
+  };
+
+
+
   "cffi" = python.mkDerivation {
     name = "cffi-1.9.1";
     src = pkgs.fetchurl {
@@ -61,6 +100,42 @@ self: {
       homepage = "";
       license = licenses.mit;
       description = "Foreign Function Interface for Python calling C code.";
+    };
+  };
+
+
+
+  "chardet" = python.mkDerivation {
+    name = "chardet-2.3.0";
+    src = pkgs.fetchurl {
+      url = "https://pypi.python.org/packages/7d/87/4e3a3f38b2f5c578ce44f8dc2aa053217de9f0b6d737739b0ddac38ed237/chardet-2.3.0.tar.gz";
+      sha256 = "e53e38b3a4afe6d1132de62b7400a4ac363452dc5dfcf8d88e8e0cce663c68aa";
+    };
+    doCheck = commonDoCheck;
+    buildInputs = commonBuildInputs;
+    propagatedBuildInputs = [ ];
+    meta = with pkgs.stdenv.lib; {
+      homepage = "";
+      license = licenses.lgpl2;
+      description = "Universal encoding detector for Python 2 and 3";
+    };
+  };
+
+
+
+  "click" = python.mkDerivation {
+    name = "click-6.7";
+    src = pkgs.fetchurl {
+      url = "https://pypi.python.org/packages/95/d9/c3336b6b5711c3ab9d1d3a80f1a3e2afeb9d8c02a7166462f6cc96570897/click-6.7.tar.gz";
+      sha256 = "f15516df478d5a56180fbf80e68f206010e6d160fc39fa508b65e035fd75130b";
+    };
+    doCheck = commonDoCheck;
+    buildInputs = commonBuildInputs;
+    propagatedBuildInputs = [ ];
+    meta = with pkgs.stdenv.lib; {
+      homepage = "";
+      license = licenses.bsdOriginal;
+      description = "A simple wrapper around optparse for powerful command line utilities.";
     };
   };
 
@@ -304,6 +379,44 @@ self: {
       homepage = "";
       license = licenses.mit;
       description = "McCabe checker, plugin for flake8";
+    };
+  };
+
+
+
+  "mohawk" = python.mkDerivation {
+    name = "mohawk-0.3.4";
+    src = pkgs.fetchurl {
+      url = "https://pypi.python.org/packages/19/22/10f696548a8d41ad41b92ab6c848c60c669e18c8681c179265ce4d048b03/mohawk-0.3.4.tar.gz";
+      sha256 = "e98b331d9fa9ece7b8be26094cbe2d57613ae882133cc755167268a984bc0ab3";
+    };
+    doCheck = commonDoCheck;
+    buildInputs = commonBuildInputs;
+    propagatedBuildInputs = [
+      self."six"
+    ];
+    meta = with pkgs.stdenv.lib; {
+      homepage = "";
+      license = licenses.mpl20;
+      description = "Library for Hawk HTTP authorization";
+    };
+  };
+
+
+
+  "multidict" = python.mkDerivation {
+    name = "multidict-2.1.4";
+    src = pkgs.fetchurl {
+      url = "https://pypi.python.org/packages/2a/df/eaea73e46a58fd780c35ecc304ca42364fa3c1f4cd03568ed33b9d2c7547/multidict-2.1.4.tar.gz";
+      sha256 = "a77aa8c9f68846c3b5db43ff8ed2a7a884dbe845d01f55113a3fba78518c4cd7";
+    };
+    doCheck = commonDoCheck;
+    buildInputs = commonBuildInputs;
+    propagatedBuildInputs = [ ];
+    meta = with pkgs.stdenv.lib; {
+      homepage = "";
+      license = licenses.asl20;
+      description = "multidict implementation";
     };
   };
 
@@ -695,6 +808,49 @@ self: {
 
 
 
+  "slugid" = python.mkDerivation {
+    name = "slugid-1.0.7";
+    src = pkgs.fetchurl {
+      url = "https://pypi.python.org/packages/dd/96/b05c6d357f8d6932bea2b360537360517d1154b82cc71b8eccb70b28bdde/slugid-1.0.7.tar.gz";
+      sha256 = "6dab3c7eef0bb423fb54cb7752e0f466ddd0ee495b78b763be60e8a27f69e779";
+    };
+    doCheck = commonDoCheck;
+    buildInputs = commonBuildInputs;
+    propagatedBuildInputs = [ ];
+    meta = with pkgs.stdenv.lib; {
+      homepage = "";
+      license = licenses.mpl20;
+      description = "Base64 encoded uuid v4 slugs";
+    };
+  };
+
+
+
+  "taskcluster" = python.mkDerivation {
+    name = "taskcluster-1.0.2";
+    src = pkgs.fetchurl {
+      url = "https://pypi.python.org/packages/d8/00/aac389ae5f2db76b029d55d36d394e272486894d155073369c4e0b272619/taskcluster-1.0.2.tar.gz";
+      sha256 = "11cfd462a333e0a084f94c9ce55e349036dbcf04656767f9773da7d148aa5115";
+    };
+    doCheck = commonDoCheck;
+    buildInputs = commonBuildInputs;
+    propagatedBuildInputs = [
+      self."aiohttp"
+      self."async-timeout"
+      self."mohawk"
+      self."requests"
+      self."six"
+      self."slugid"
+    ];
+    meta = with pkgs.stdenv.lib; {
+      homepage = "";
+      license = "";
+      description = "Python client for Taskcluster";
+    };
+  };
+
+
+
   "uritemplate" = python.mkDerivation {
     name = "uritemplate-3.0.0";
     src = pkgs.fetchurl {
@@ -766,6 +922,26 @@ self: {
       homepage = "";
       license = licenses.mit;
       description = "A patch parsing library.";
+    };
+  };
+
+
+
+  "yarl" = python.mkDerivation {
+    name = "yarl-0.9.2";
+    src = pkgs.fetchurl {
+      url = "https://pypi.python.org/packages/4a/15/a9f1b82bb88c2c11fee12d0e4248f0ed4cb0ec3e2b25fa4b0e52baff0899/yarl-0.9.2.tar.gz";
+      sha256 = "4c63264bdf022e4ab509dd8946147dec026a4110c90e0a2dda9499385c312ece";
+    };
+    doCheck = commonDoCheck;
+    buildInputs = commonBuildInputs;
+    propagatedBuildInputs = [
+      self."multidict"
+    ];
+    meta = with pkgs.stdenv.lib; {
+      homepage = "";
+      license = licenses.asl20;
+      description = "Yet another URL library";
     };
   };
 

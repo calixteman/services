@@ -14,6 +14,10 @@ self: super: {
     buildInputs = old.buildInputs ++ [ self."setuptools-scm" ];
   });
 
+  "async-timeout" = python.overrideDerivation super."async-timeout" (old: {
+    buildInputs = old.buildInputs ++ [ self."pytest-runner" ];
+  });
+
   "libmozdata" = python.overrideDerivation super."libmozdata" (old: {
     # Remove useless dependencies
     preConfigure = ''

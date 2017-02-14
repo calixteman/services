@@ -120,7 +120,7 @@ let
 
   bot_common = import ./../../lib/bot_common {
     inherit releng_pkgs python;
-    extras = ["pulse" ];
+    extras = ["pulse" "taskcluster"];
   };
 
   self = mkPythonEnv rec {
@@ -136,6 +136,7 @@ let
     propagatedBuildInputs =
       [ 
         python.packages.libmozdata
+        python.packages.click
       ];
     passthru = {
       taskclusterHooks = {

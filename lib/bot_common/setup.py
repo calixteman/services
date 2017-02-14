@@ -28,7 +28,8 @@ setup(
     install_requires=[
     ],
     extras_require=dict(
-        pulse=['aioamqp', 'aioamqp'],
+        pulse=['aioamqp'],
+        taskcluster=['taskcluster'],
     ),
     packages=find_packages(),
     include_package_data=True,

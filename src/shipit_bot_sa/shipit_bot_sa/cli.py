@@ -1,8 +1,13 @@
 from shipit_bot_sa.workflow import PulseWorkflow
+import click
 
 
-def main():
-    w = PulseWorkflow()
+@click.command()
+@click.option('--secrets', required=True, help='Taskcluster Secrets path')
+@click.option('--client-id', help='Taskcluster Client ID')
+@click.option('--client-token', help='Taskcluster Client token')
+def main(secrets, client_id, client_token):
+    w = PulseWorkflow(secrets, client_id, client_token)
     w.run()
 
 

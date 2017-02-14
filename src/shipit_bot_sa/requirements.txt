@@ -1,8 +1,7 @@
--e ../../lib/bot_common[pulse]
+-e ../../lib/bot_common[pulse,taskcluster]
 
 -e .
 
 libmozdata
-asyncio
 
-# click
+click

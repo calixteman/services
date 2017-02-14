@@ -16,8 +16,9 @@ in python.mkDerivation {
       python.packages."pytest"
     ];
   propagatedBuildInputs =
-    [
-    ] ++ optionals (builtins.elem "pulse" extras) [ python.packages."aioamqp" ]
+    []
+     ++ optionals (builtins.elem "pulse" extras) [ python.packages."aioamqp" ]
+     ++ optionals (builtins.elem "taskcluster" extras) [ python.packages."taskcluster" ]
     ;
   checkPhase = ''
     flake8 --exclude=nix_run_setup.py,build/

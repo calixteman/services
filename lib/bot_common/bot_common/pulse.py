@@ -7,6 +7,10 @@ logger = logging.getLogger(__name__)
 
 
 async def create_consumer(user, password, queue, topic, callback):
+    """
+    Create an async consumer for Mozilla pulse queues
+    Inspired by : https://github.com/mozilla-releng/fennec-aurora-task-creator/blob/master/fennec_aurora_task_creator/worker.py  # noqa
+    """
     assert isinstance(user, str)
     assert isinstance(password, str)
     assert isinstance(queue, str)
@@ -23,7 +27,6 @@ async def create_consumer(user, password, queue, topic, callback):
             ssl=True,
             port=port,
         )
-        print('OK', protocol)
     except aioamqp.AmqpClosedConnection as acc:
         logger.exception('AMQP Connection closed: %s', acc)
         return
@@ -35,10 +38,9 @@ async def create_consumer(user, password, queue, topic, callback):
         connection_global=False
     )
 
-    print('Before')
     queue = 'queue/{}/{}'.format(user, queue)
     await channel.queue_declare(queue_name=queue, durable=True)
-    print('Queue {} : {}'.format(queue, topic))
+    logger.info('Connected on queue {} & topic {}'.format(queue, topic))
 
     await channel.queue_bind(exchange_name='exchange/bugzilla/simple',
                              queue_name=queue,
@@ -49,6 +51,9 @@ async def create_consumer(user, password, queue, topic, callback):
 
 
 def run_consumer(consumer):
+    """
+    Helper to run indefinitely an asyncio consumer
+    """
     event_loop = asyncio.get_event_loop()
 
     try:
