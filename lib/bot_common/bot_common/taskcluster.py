@@ -44,6 +44,17 @@ class TaskclusterClient(object):
         secrets = taskcluster.Secrets(self.options).get(path)
         return secrets['secret']
 
+    def notify_email(self, address, subject, content):
+        """
+        Send an email through Taskcluster notification service
+        """
+        notify = taskcluster.Notify(self.options)
+        return notify.email({
+            'address': address,
+            'subject': subject,
+            'content': content,
+        })
+
     def read_hosts():
         """
         Read /etc/hosts to get hostnames
